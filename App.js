@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useEffect, useState } from 'react';
 import Header from './components/Header';
 import Task from './components/Task';
@@ -26,32 +26,34 @@ export default function App() {
     } else {
       Alert.alert("task must contain more than three characters")
     }
-   
+
   }
 
   // delete a task
   const deleteTask = (key) => {
     setTasks((previousTasks => {
-      return previousTasks.filter(task =>task.key != key)
+      return previousTasks.filter(task => task.key != key)
     }))
   }
   return (
-    <View style={styles.container}>
-      {/* header */}
-      <Header/>
-      <View style={styles.content}>
-        {/* form */}
-        <AddTasks createTask={createTask} />
-        <View style={styles.list}>
-          <FlatList
-            data={tasks}
-            renderItem={({ item }) => (
-              <Task item={item} deleteTask={ deleteTask } />
-            )}
-          />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>
+      <View style={styles.container}>
+        {/* header */}
+        <Header />
+        <View style={styles.content}>
+          {/* form */}
+          <AddTasks createTask={createTask} />
+          <View style={styles.list}>
+            <FlatList
+              data={tasks}
+              renderItem={({ item }) => (
+                <Task item={item} deleteTask={deleteTask} />
+              )}
+            />
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
